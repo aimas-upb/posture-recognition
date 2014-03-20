@@ -1,6 +1,6 @@
 import os
 import json
-from skeleton_features import compute_angles, joints
+from skeleton_features import all_features, joints
 
 #f = open("pos.txt")
 
@@ -38,7 +38,7 @@ def outputCsvLine(m, out):
     out.write('\n') 
 
 def outputFeaturesCsvLine(m, out):
-    features = compute_angles(m['skeleton_3D'])
+    features = all_features(m['skeleton_3D'])
     for f in features:
         out.write(str(f))
         out.write(', ')
