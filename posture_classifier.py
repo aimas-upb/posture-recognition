@@ -4,7 +4,6 @@
 from sklearn import tree
 from sklearn import cross_validation
 
-
 class Example:
     '''Stores the name of a posture and a list of parameters set that exemplify that posture'''
     def __init__(self, posture, feature_vectors):
@@ -40,4 +39,5 @@ def tree_classifier(examples):
     print 'Got score', score
     
     return clf
-    
+
+

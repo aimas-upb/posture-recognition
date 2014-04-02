@@ -9,7 +9,7 @@ sensor_pos = ['X', 'Y', 'Z', 'alpha', 'beta', 'gamma']
 valid_sensors = ['daq-01', 'daq-02', 'daq-03']
 
 
-raw_data_path = '/home/ami/cosmin/proiecte/posture-recognition/raw-data-test'
+raw_data_path = '/home/liviu/proiecte/posture-recognition/raw-data-test'
 
 def validJson(m):
     if (m['type'] != 'skeleton'):
