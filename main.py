@@ -3,11 +3,14 @@ import json
 import os
 from os.path import basename, splitext
 
-from posture_classifier import Example, tree_classifier
+from sklearn.externals import joblib
+
+from clustering import cluster
+from posture_classifier import Example, tree_classifier, filter_by_kl
 from skeleton_features import all_features
 
-valid_sensors = ['daq-03']
-raw_data_path = '/home/ami/cosmin/proiecte/posture-recognition/raw-data'
+valid_sensors = [] #empty means all sensors
+raw_data_path = '/home/ami/cosmin/proiecte/posture-recognition/raw-data-test'
 
 
 def example_from_file(filename, label = None):
@@ -32,14 +35,22 @@ def main():
         raise "%s is not a folder" % raw_data_path
     
     examples = [example_from_file(raw_data_path + '/' + filename) for filename in os.listdir(raw_data_path) if validFile(filename)]
-    classifier = tree_classifier(examples)
-    print  classifier
+    
+#     classifier = tree_classifier(examples)    
+#     filename = '/tmp/digits_classifier.joblib.pkl'
+#     _ = joblib.dump(classifier, filename, compress=9)
+#         
+#     print classifier
+
+    for e in examples:
+        print cluster(e.feature_vectors)
+        
     
 def validJson(m):
     '''Returns true iff the json is of interest'''
     if (m['type'] != 'skeleton'):
         return False;
-    elif (m['sensor_id'] not in valid_sensors):
+    elif len(valid_sensors) > 0 and  (m['sensor_id'] not in valid_sensors):
         return False
     else:
         return True

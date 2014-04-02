@@ -1,6 +1,8 @@
 '''
     Based on a novel by Mihai Trascau, famous author and scholar
 '''
+import matplotlib.pyplot as pp
+import numpy as np
 from sklearn import tree
 from sklearn import cross_validation
 
@@ -24,6 +26,55 @@ def input_data_of_examples(examples):
             y.append(e.posture)
     
     return X,y
+
+
+def filter_by_kl(feature_vectors):
+    ''' filters the examples using divergence'''
+    
+    def normalize(vector):
+        m = min(vector) - 10e-18
+        vector = [v - m for v in vector]
+        s = sum(vector)
+        return [v / s for v in vector]
+    
+    def distance(index):
+        p = normalize(feature_vectors[i])
+        q = normalize(feature_vectors[i+1])
+        #p = feature_vectors[i]
+        #q = feature_vectors[i+1]
+        
+        return kl(p, q)
+    
+    distances = [distance(i) for i in range(len(feature_vectors) -1)]
+    filtered = []
+    print 'Got max:', max(distances), ', min:', min(distances), ', avg:', np.mean(distances), ' std:', np.std(distances)
+    print 'Filtered', len(filtered), 'examples from initial', len(feature_vectors), 'examples'
+    pp.plot(distances)
+    pp.show()
+     
+    
+      
+    return [range(22)]
+    
+def kl(p, q):
+    """Kullback-Leibler divergence D(P || Q) for discrete distributions
+ 
+    Parameters
+    ----------
+    p, q : array-like, dtype=float, shape=n
+        Discrete probability distributions.
+    """
+    
+    idx = [i for i in range(len(p)) if p[i] != 0 and q[i] != 0]
+    
+    p = [p[i] for i in idx]
+    q = [q[i] for i in idx]
+    
+    p = np.asarray(p, dtype=np.float)
+    q = np.asarray(q, dtype=np.float)
+ 
+    return np.sum(np.where(p != 0, p * np.log(p / q), 0))
+
 
 def tree_classifier(examples):
     ''' Receives a list of Example objects and returns a tree.DecisionTreeClassifier'''
