@@ -14,7 +14,7 @@ raw_data_path = '/home/ami/cosmin/proiecte/posture-recognition/raw-data-test'
 
 
 def example_from_file(filename, label = None):
-    '''Returns an Experiment object reading exemple skeletons from an input file
+    '''Returns an Experiment object reading example skeletons from an input file
        if label is None than the file name (w/o extension) is used
     '''
     
